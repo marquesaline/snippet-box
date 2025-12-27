@@ -1,0 +1,29 @@
+services:
+  app:
+    image: ruby:3.2
+    container_name: snippetbox_app
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+    command: bash
+
+  db:
+    image: postgres:16
+    container_name: snippetbox_db
+    environment:
+      POSTGRES_USER: snippetbox
+      POSTGRES_PASSWORD: snippetbox
+      POSTGRES_DB: snippetbox_development
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
