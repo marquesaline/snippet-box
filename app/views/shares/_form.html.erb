@@ -1,11 +1,26 @@
-<%= form_with model: share do |f| %>
-  <div>
-    <%= f.label :slug %>
-    <%= f.text_field :slug %>
+<%= form_with model: share, data: { controller: "form" } do |f| %>
+  
+  <div class="form-group">
+    <%= f.label :slug, "Custom URL" %>
+    <%= f.text_field :slug, 
+                     placeholder: "my-awesome-code",
+                     data: { form_target: "slug", action: "blur->form#validateSlug" } %>
+    <span class="error-message" data-form-target="slugError"></span>
+    <small class="help-text">Only lowercase letters, numbers and hyphens</small>
   </div>
-  <div>
-    <%= f.label :content %>
-    <%= f.text_area :content, data: { controller: "markdown" } %>
+
+  <div class="form-group">
+    <%= f.label :content, "Content (Markdown)" %>
+    <%= f.text_area :content, data: { form_target: "markdown" } %>
   </div>
-  <%= f.submit %>
+
+  <div class="form-group">
+    <%= f.label :files, "Files (optional)" %>
+    <div data-form-target="filesContainer"></div>
+    <button type="button" class="btn-secondary" data-action="form#addFileField">
+      + Add file (max 5, 5MB each)
+    </button>
+  </div>
+
+  <%= f.submit "Share", class: "btn-primary" %>
 <% end %>
