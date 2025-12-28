@@ -1,0 +1,11 @@
+<%= form_with model: share do |f| %>
+  <div>
+    <%= f.label :slug %>
+    <%= f.text_field :slug %>
+  </div>
+  <div>
+    <%= f.label :content %>
+    <%= f.text_area :content, data: { controller: "markdown" } %>
+  </div>
+  <%= f.submit %>
+<% end %>
