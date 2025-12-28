@@ -13,12 +13,12 @@ A web platform for quick code and file sharing, initially designed for education
 
 1. **Start the containers**
 ```bash
-   docker-compose up -d
+   docker compose up -d
 ```
 
 2. **Enter the app container**
 ```bash
-   docker-compose exec app bash
+   docker compose exec app bash
 ```
 
 3. **Install dependencies**
