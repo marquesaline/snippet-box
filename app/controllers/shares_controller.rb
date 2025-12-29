@@ -1,4 +1,8 @@
 class SharesController < ApplicationController
+  def show
+    @share = Share.find_by!(slug: params[:slug])
+  end
+
   def new
     @share = Share.new
   end

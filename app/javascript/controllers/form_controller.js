@@ -31,7 +31,7 @@ export default class extends Controller {
     new window.EasyMDE({ 
       element: this.markdownTarget, 
       toolbar: [
-        "bold", "italic", "heading", "|",
+        "bold", "italic", "heading-1", "heading-2", "heading-3", "|",
         "code", "quote", "|",
         "unordered-list", "ordered-list", "|",
         "link", "image", "|",

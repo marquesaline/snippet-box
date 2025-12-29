@@ -1,4 +1,14 @@
-<%= form_with model: share, data: { controller: "form" } do |f| %>
+<%= form_with model: share, data: { controller: "form" }, html: { multipart: true } do |f| %>
+  <% if @share.errors.any? %>
+    <div class="errors">
+      <h2><%= pluralize(@share.errors.count, "error") %> prohibited this share from being saved:</h2>
+      <ul>
+        <% @share.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
   
   <div class="form-group">
     <%= f.label :slug, "Custom URL" %>

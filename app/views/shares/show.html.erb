@@ -1,0 +1,22 @@
+<h1>Share</h1>
+
+<% if can_edit?(@share) %>
+  <%= link_to "Edit", edit_share_path(@share) %>
+<% end %>
+
+<% if @share.content.present? %>
+  <div class="markdown-content">
+    <%= render_markdown(@share.content) %>
+  </div>
+<% end %>
+
+<% if @share.files.attached? %>
+  <h2>Files</h2>
+  <ul>
+    <% @share.files.each do |file| %>
+      <li>
+        <%= link_to file.filename, rails_blob_path(file, disposition: "attachment") %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
