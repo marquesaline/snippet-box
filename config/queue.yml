@@ -7,7 +7,11 @@ default: &default
       threads: 3
       processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
       polling_interval: 0.1
-
+  recurring_tasks:
+    expire_shares:
+      class: ExpireSharesJob
+      schedule: every day at 1am in America/Sao_Paulo
+  
 development:
   <<: *default
 

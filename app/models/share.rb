@@ -39,6 +39,7 @@ class Share < ApplicationRecord
   end
 
   def set_expires_at
+    return if expires_at.present? 
     self.expires_at = 30.days.from_now
   end
 
