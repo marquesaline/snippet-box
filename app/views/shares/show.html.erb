@@ -5,8 +5,30 @@
 <% end %>
 
 <% if @share.content.present? %>
-  <div class="markdown-content">
-    <%= render_markdown(@share.content) %>
+  <div data-controller="share" 
+       data-share-source-value="<%= @share.content %>">
+    
+    <div class="toggle-buttons">
+      <button data-action="click->share#showRendered"
+              data-share-target="renderedButton"
+              class="active">
+        Rendered
+      </button>
+      <button data-action="click->share#showRaw"
+              data-share-target="rawButton">
+        Raw
+      </button>
+      <button data-action="click->share#copy"
+              data-share-target="copyButton">
+        Copy
+      </button>
+    </div>
+
+    <div data-share-target="rendered" class="markdown-content">
+      <%= render_markdown(@share.content) %>
+    </div>
+
+    <pre data-share-target="raw" class="raw-content hidden"><%= @share.content %></pre>
   </div>
 <% end %>
 
