@@ -42,3 +42,29 @@ A web platform for quick code and file sharing, initially designed for education
    Open your browser at: http://localhost:3001
 
 ---
+
+### Testing
+
+```bash
+# Run all tests with coverage
+bin/rails test
+
+# Run only controller tests
+bin/rails test test/controllers/
+
+# Run only model tests
+bin/rails test test/models/
+```
+
+### Code Quality
+
+```bash
+# Auto-fix style violations (RuboCop)
+bundle exec rubocop -A
+
+# Check style without fixing
+bundle exec rubocop
+
+# Check specific file
+bundle exec rubocop app/models/share.rb
+```

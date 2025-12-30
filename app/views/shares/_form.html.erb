@@ -1,23 +1,29 @@
-<%= form_with model: share, data: { controller: "form" }, html: { multipart: true } do |f| %>
-  <% if @share.errors.any? %>
+<%= form_with model: share, 
+              url: share.persisted? ? share_path(share.slug) : shares_path,
+              method: share.persisted? ? :patch : :post,
+              data: { controller: "form" }, 
+              html: { multipart: true } do |f| %>
+  <% if share.errors.any? %>
     <div class="errors">
-      <h2><%= pluralize(@share.errors.count, "error") %> prohibited this share from being saved:</h2>
+      <h2><%= pluralize(share.errors.count, "error") %> prohibited this share from being saved:</h2>
       <ul>
-        <% @share.errors.full_messages.each do |message| %>
+        <% share.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
   
-  <div class="form-group">
-    <%= f.label :slug, "Custom URL" %>
-    <%= f.text_field :slug, 
-                     placeholder: "my-awesome-code",
-                     data: { form_target: "slug", action: "blur->form#validateSlug" } %>
-    <span class="error-message" data-form-target="slugError"></span>
-    <small class="help-text">Only lowercase letters, numbers and hyphens</small>
-  </div>
+  <% unless share.persisted? %>
+    <div class="form-group">  
+      <%= f.label :slug, "Custom URL (optional)" %>
+      <%= f.text_field :slug, 
+                      placeholder: "my-awesome-code",
+                      data: { form_target: "slug", action: "blur->form#validateSlug" } %>
+      <span class="error-message" data-form-target="slugError"></span>
+      <small class="help-text">Only lowercase letters, numbers and hyphens. Leave blank to auto-generate.</small>
+    </div>
+  <% end %>
 
   <div class="form-group">
     <%= f.label :content, "Content (Markdown)" %>
@@ -26,11 +32,27 @@
 
   <div class="form-group">
     <%= f.label :files, "Files (optional)" %>
+
+    <% if share.persisted? && share.files.attached? %>
+      <div class="existing-files" style="margin-bottom: 1rem; padding: 1rem; background: #f5f5f5; border-radius: 4px;">
+        <h4 style="margin-top: 0;">Current files:</h4>
+        <% share.files.each do |file| %>
+          <div style="padding: 0.5rem 0; border-bottom: 1px solid #ddd;">
+            <%= check_box_tag "remove_files[]", file.id, false, id: "remove_file_#{file.id}" %>
+            <%= label_tag "remove_file_#{file.id}" do %>
+              📎 <strong><%= file.filename %></strong> 
+              (<%= number_to_human_size(file.byte_size) %>)
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
     <div data-form-target="filesContainer"></div>
     <button type="button" class="btn-secondary" data-action="form#addFileField">
       + Add file (max 5, 5MB each)
     </button>
   </div>
 
-  <%= f.submit "Share", class: "btn-primary" %>
+  <%= f.submit share.persisted? ? "Update Share" : "Create Share", class: "btn-primary" %>
 <% end %>

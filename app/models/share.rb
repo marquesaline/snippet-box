@@ -10,6 +10,10 @@ class Share < ApplicationRecord
   validates :edit_token, presence: true, uniqueness: true
   validate :must_have_content_or_files
 
+  def to_param
+    slug
+  end
+
   private
 
   def must_have_content_or_files
@@ -25,7 +29,7 @@ class Share < ApplicationRecord
 
   def generate_slug_if_blank
     return if slug.present?
-    
+
     loop do
       random_slug = SecureRandom.urlsafe_base64(4).downcase
       break self.slug = random_slug unless Share.exists?(slug: random_slug)
