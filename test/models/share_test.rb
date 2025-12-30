@@ -6,9 +6,11 @@ class ShareTest < ActiveSupport::TestCase
     assert share.valid?
   end
 
-  test "should not save share without slug" do
-    share = Share.new(content: "const hello = 'world';")
-    assert_not share.save
+  test "should auto-generate slug if not provided" do
+    share = Share.new(content: "Test content")
+    assert share.save
+    assert_not_nil share.slug
+    assert_match /\A[a-z0-9\-]+\z/, share.slug 
   end
 
   test "should not save share without content" do
