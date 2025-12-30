@@ -39,7 +39,7 @@ class Share < ApplicationRecord
   end
 
   def set_expires_at
-    return if expires_at.present? 
+    return if expires_at.present?
     self.expires_at = 30.days.from_now
   end
 
@@ -50,7 +50,7 @@ class Share < ApplicationRecord
 
   def acceptable_file_size
     return unless files.attached?
-    
+
     files.each do |file|
       if file.byte_size > 5.megabytes
         errors.add(:files, "#{file.filename} is too large (max 5MB)")
