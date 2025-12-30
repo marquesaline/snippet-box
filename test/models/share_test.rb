@@ -49,4 +49,47 @@ class ShareTest < ActiveSupport::TestCase
     share2 = Share.create(slug: "aula-2", content: "Second")
     assert_not_equal share1.edit_token, share2.edit_token
   end
+
+  test "should not save share with more than 5 files" do
+    share = Share.new(content: "Test", has_files: true)
+    
+    # Attach 6 files
+    6.times do |i|
+      share.files.attach(
+        io: StringIO.new("content"),
+        filename: "test#{i}.txt"
+      )
+    end
+    
+    assert_not share.valid?
+    assert_includes share.errors[:files], "can't exceed 5 files"
+  end
+
+  test "should not save share with file larger than 5MB" do
+    share = Share.new(content: "Test", has_files: true)
+    
+    # Create a 6MB file
+    large_content = "a" * 6.megabytes
+    share.files.attach(
+      io: StringIO.new(large_content),
+      filename: "large.txt"
+    )
+    
+    assert_not share.valid?
+    assert_includes share.errors[:files], "large.txt is too large (max 5MB)"
+  end
+
+  test "should save share with valid files" do
+    share = Share.new(content: "Test", has_files: true)
+    
+    3.times do |i|
+      share.files.attach(
+        io: StringIO.new("small content"),
+        filename: "test#{i}.txt"
+      )
+    end
+    
+    assert share.valid?
+    assert share.save
+  end
 end

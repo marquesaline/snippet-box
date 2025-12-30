@@ -9,6 +9,8 @@ class Share < ApplicationRecord
   validates :slug, presence: true, uniqueness: true, format: { with: /\A[a-z0-9\-]+\z/, message: "only allows lowercase letters, numbers and hyphens" }
   validates :edit_token, presence: true, uniqueness: true
   validate :must_have_content_or_files
+  validate :maximum_files_attached
+  validate :acceptable_file_size
 
   def to_param
     slug
@@ -38,5 +40,20 @@ class Share < ApplicationRecord
 
   def set_expires_at
     self.expires_at = 30.days.from_now
+  end
+
+  def maximum_files_attached
+    return unless files.attached? && files.count > 5
+    errors.add(:files, "can't exceed 5 files")
+  end
+
+  def acceptable_file_size
+    return unless files.attached?
+    
+    files.each do |file|
+      if file.byte_size > 5.megabytes
+        errors.add(:files, "#{file.filename} is too large (max 5MB)")
+      end
+    end
   end
 end
