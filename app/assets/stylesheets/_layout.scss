@@ -1,0 +1,258 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.btn-primary {
+  padding: 10px;
+  background-color: $primary-blue;
+  color: #FFF;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  font-weight: 500;
+
+  &:hover {
+    background-color: $primary-hover;
+    cursor: pointer;
+  }
+}
+
+.btn-secondary {
+  padding: 10px;
+  background-color: #FFF;
+  border: 1px solid $primary-blue;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  font-weight: 500;
+  color: $primary-blue;
+
+  &:hover {
+    background-color: $primary-hover;
+    cursor: pointer;
+    color: #FFF;
+  }
+}
+
+.btn-outline {
+  padding: 6px 16px;
+  background: white;
+  border: 1px solid $primary-blue;
+  border-radius: 6px;
+  color: $primary-blue;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &:hover {
+    background: $primary-blue;
+    color: white;
+    cursor: pointer;
+  }
+
+  &.active {
+    background: $primary-blue;
+    color: white;
+    border-color: $primary-blue;
+  }
+  
+  &.copied {
+    background: $success-color;
+    color: white;
+    border-color: $success-color;
+  }
+}
+
+.remove-file, .btn-danger {
+  padding: 5px;
+  background-color: $bg-page;
+  color: $danger-color !important;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $primary-blue;
+  border: 1px solid $danger-color;
+  margin-left: 5px;
+
+  &:hover {
+    background-color: $danger-color;
+    cursor: pointer;
+    color: #FFF !important;
+   
+  }
+}
+
+.header {
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    div a {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: $font-family-ui;
+      text-decoration: none;
+    }
+
+    nav {
+      a {
+        text-decoration: none;
+        color: $text-muted;
+      }
+    }
+  }
+}
+
+.new-share-container, .edit-share-container {
+  max-width: 1024px;
+  margin: 1rem auto;
+
+  h2 {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+
+    @include mobile {
+      font-size: 2rem;
+    }
+  }
+
+  .info-message {
+    font-size: 12px;
+    margin-top: 12px;
+    color: $text-muted;
+  }
+
+  form {
+    @include tablet-down {
+      padding: 0 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin: 1.5rem auto;
+
+      label {
+        color: $text-muted;
+        margin-bottom: 0.5rem;
+      }
+
+      input {
+        padding: 8px;
+        border: 1px solid $text-light;
+        border-radius: 8px;
+        outline: none;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+
+        &::placeholder {
+          color: $text-muted;
+          opacity: 0.6;
+        }
+
+        &:hover {
+          border-color: darken($border-color, 10%);
+        }
+
+        &:focus {
+          border-color: $primary-blue;
+        }
+      }
+
+      button {
+        max-width: 300px;
+        margin-top: 8px;
+      }
+
+      .help-text {
+        color: $text-muted;
+        font-size: 12px;
+        margin-top: 0.5rem;
+      }
+
+      .error-message {
+        color: $danger-color;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+    }
+    input[type="file"] {
+      flex: 1;
+      padding: 0;
+      border: none;
+      font-size: 0.875rem;
+      font-family: $font-family-ui;
+      cursor: pointer;
+      margin-bottom: 10px;
+
+      &::file-selector-button {
+        padding: 6px 12px;
+        background: $bg-page;
+        border: 1px solid $border-color;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: $text-dark;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-right: 12px;
+
+        &:hover {
+          background: $primary-blue;
+          color: white;
+          border-color: $primary-blue;
+        }
+      }
+    }
+  }
+}
+
+.show-container {
+  max-width: 1024px;
+  margin: 1rem auto;
+
+  .content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.875rem;
+  }
+
+  .files-container {
+    margin-top: 1rem;
+
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0;
+
+      .file-info {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+      }
+
+      .btn-download {
+      }
+    }
+  }
+}
+

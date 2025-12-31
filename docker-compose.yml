@@ -11,7 +11,12 @@ services:
       - db
     stdin_open: true
     tty: true
-    command: bash
+    command: >
+      bash -c "
+        bundle install &&
+        gem install foreman &&
+        foreman start -f Procfile.dev
+      "
 
   db:
     image: postgres:16

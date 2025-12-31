@@ -1,0 +1,183 @@
+@import "variables";
+@import "typography";
+@import "mixins";
+@import "layout";
+
+.hidden {
+  display: none;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing-lg;
+}
+
+.markdown-content {
+  background: $bg-white;
+  padding: $spacing-lg;
+  border-radius: $border-radius;
+  border: $border-width solid $border-color;
+}
+
+.raw-content {
+  background: $bg-code;
+  padding: $spacing-lg;
+  border-radius: $border-radius;
+  border: $border-width solid $border-color;
+  overflow-x: auto;
+}
+
+code {
+  background: #f6f8fa;
+  border: 1px solid #e1e4e8;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-family: $font-family-code;
+  font-size: 0.875em;
+  color: #e83e8c;
+  font-weight: 500;
+}
+
+// ✨ CODE BLOCKS (blocos de código - o principal!)
+pre {
+  background: #1e1e1e; // Fundo escuro VS Code
+  border: 1px solid #3d3d3d;
+  border-radius: 8px;
+  padding: 1.25rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  // Remove estilos do inline code quando dentro de pre
+  code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #d4d4d4; // Texto base claro
+    font-size: 0.875rem;
+    line-height: 1.6;
+    font-family: $font-family-code;
+    display: block;
+    font-weight: 400;
+
+    // ✨ SYNTAX HIGHLIGHTING
+    // Keywords (def, class, import, return)
+    .k, .kd, .kn, .kr, .kv, .kp {
+      color: #569cd6;
+      font-weight: 500;
+    }
+
+    // Built-in functions (print, len, puts)
+    .nb, .bp {
+      color: #4ec9b0;
+    }
+
+    // Strings ("texto", 'texto')
+    .s, .s1, .s2, .se, .sr, .sh {
+      color: #ce9178;
+    }
+
+    // Numbers (123, 3.14)
+    .mi, .mf, .mo, .il {
+      color: #b5cea8;
+    }
+
+    // Comments (# comentário, // comentário)
+    .c, .c1, .cm, .cp, .cs {
+      color: #6a9955;
+      font-style: italic;
+    }
+
+    // Function names
+    .nf, .fm {
+      color: #dcdcaa;
+    }
+
+    // Operators (+, -, =, ==)
+    .o, .ow {
+      color: #d4d4d4;
+    }
+
+    // Punctuation ((), {}, [])
+    .p {
+      color: #808080;
+    }
+
+    // Variable/class names
+    .n, .na, .nc, .nn, .no {
+      color: #4ec9b0;
+    }
+
+    // HTML tags
+    .nt {
+      color: #569cd6;
+    }
+
+    // Attributes
+    .na {
+      color: #9cdcfe;
+    }
+
+    // Errors
+    .err {
+      color: #f44747;
+      text-decoration: wavy underline;
+    }
+
+    // Self, this, super
+    .bp {
+      color: #569cd6;
+      font-style: italic;
+    }
+
+    // Decorators (@decorator)
+    .nd {
+      color: #dcdcaa;
+    }
+  }
+}
+
+// Blockquotes
+blockquote {
+  border-left: 4px solid $primary-blue;
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: $text-muted;
+  font-style: italic;
+}
+
+// Links
+a {
+  color: $primary-blue;
+  text-decoration: underline;
+
+  &:hover {
+    color: darken($primary-blue, 10%);
+  }
+}
+
+// Horizontal rules
+hr {
+  border: none;
+  border-top: 2px solid $border-color;
+  margin: 2rem 0;
+}
+
+// Tables
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+
+  th, td {
+    padding: 0.75rem;
+    border: 1px solid $border-color;
+    text-align: left;
+  }
+
+  th {
+    background: $bg-page;
+    font-weight: 600;
+  }
+}

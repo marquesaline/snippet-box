@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+// Base Typography
+body {
+  font-family: $font-family-ui;
+  font-size: $font-size-base;
+  line-height: $line-height-normal;
+  color: $text-dark;
+  background-color: $bg-page;
+}
+
+// Code Typography
+pre,
+code,
+.code,
+.raw-content {
+  font-family: $font-family-code;
+  font-size: $font-size-sm;
+  line-height: $line-height-relaxed;
+}
+
+// Headings
+h1 {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  color: $text-dark;
+}
+
+h2 {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-tight;
+  color: $text-dark;
+}
+
+h3 {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $text-dark;
+}

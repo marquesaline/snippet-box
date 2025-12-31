@@ -1,44 +1,49 @@
-<h1>Share</h1>
+<div class="show-container">
+  <% if @share.content.present? %>
+    <div data-controller="share" data-share-source-value="<%= @share.content %>">
+      <div class="content-header">
+        <h2>Content</h2>
+        <div class="toggle-buttons">
+          <button data-action="click->share#showRendered" data-share-target="renderedButton" class="btn-outline active">
+            Rendered
+          </button>
+          <button data-action="click->share#showRaw" data-share-target="rawButton" class="btn-outline">
+            Raw
+          </button>
+          <button data-action="click->share#copy" data-share-target="copyButton" class="btn-outline">
+            Copy
+          </button>
+          <% if can_edit?(@share) %>
+            <%= link_to "Edit", edit_share_path(@share), class: "btn-outline" %>
+          <% end %>
+        </div>
+      </div>
 
-<% if can_edit?(@share) %>
-  <%= link_to "Edit", edit_share_path(@share) %>
-<% end %>
-
-<% if @share.content.present? %>
-  <div data-controller="share" 
-       data-share-source-value="<%= @share.content %>">
-    
-    <div class="toggle-buttons">
-      <button data-action="click->share#showRendered"
-              data-share-target="renderedButton"
-              class="active">
-        Rendered
-      </button>
-      <button data-action="click->share#showRaw"
-              data-share-target="rawButton">
-        Raw
-      </button>
-      <button data-action="click->share#copy"
-              data-share-target="copyButton">
-        Copy
-      </button>
+      <div data-share-target="rendered" class="markdown-content">
+        <%= render_markdown(@share.content) %>
+      </div>
+      
+      <pre data-share-target="raw" class="raw-content hidden"><%= @share.content %></pre>
     </div>
+  <% end %>
 
-    <div data-share-target="rendered" class="markdown-content">
-      <%= render_markdown(@share.content) %>
+  <% if @share.files.attached? %>
+    <div class="files-container">
+      <h2>Files</h2>
+      <div class="files-list">
+        <% @share.files.each do |file| %>
+          <div class="file-item">
+            <div class="file-info">
+              <span class="file-icon"><%= file_icon(file.filename.to_s) %></span>
+              <div class="file-details">
+                <span class="file-name"><%= file.filename %></span>
+                <span class="file-size">(<%= number_to_human_size(file.byte_size) %>)</span>
+              </div>
+            </div>
+            <%= link_to "Download", rails_blob_path(file, disposition: "attachment"), class: "btn-outline" %>
+          </div>
+        <% end %>
+      </div>
     </div>
-
-    <pre data-share-target="raw" class="raw-content hidden"><%= @share.content %></pre>
-  </div>
-<% end %>
-
-<% if @share.files.attached? %>
-  <h2>Files</h2>
-  <ul>
-    <% @share.files.each do |file| %>
-      <li>
-        <%= link_to file.filename, rails_blob_path(file, disposition: "attachment") %>
-      </li>
-    <% end %>
-  </ul>
-<% end %>
+  <% end %>
+</div>

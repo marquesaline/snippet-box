@@ -28,16 +28,39 @@ export default class extends Controller {
   }
 
   initializeMarkdownEditor() {
-    new window.EasyMDE({ 
-      element: this.markdownTarget, 
-      toolbar: [
-        "bold", "italic", "heading-1", "heading-2", "heading-3", "|",
-        "code", "quote", "|",
-        "unordered-list", "ordered-list", "|",
-        "link", "image", "|",
-        "preview", "side-by-side", "fullscreen", "|",
-        "guide"
+    const editorContainer = document.createElement('div')
+    this.markdownTarget.parentNode.insertBefore(editorContainer, this.markdownTarget)
+    this.markdownTarget.style.display = 'none' 
+    
+    this.editor = new toastui.Editor({
+      el: editorContainer,
+      height: '500px',
+      initialEditType: 'markdown',
+      previewStyle: 'vertical',
+      initialValue: this.markdownTarget.value || '',
+      
+      toolbarItems: [
+        ['heading', 'bold', 'italic', 'strike'],
+        ['hr', 'quote'],
+        ['ul', 'ol', 'task'],
+        ['table', 'link'],
+        ['code', 'codeblock'],
+        ['scrollSync']
+      ],
+      
+      plugins: [
+        [toastui.Editor.plugin.codeSyntaxHighlight, { highlighter: Prism }]
+      ],
+      
+      codeBlockLanguages: [
+        'javascript', 'python', 'ruby', 'java', 'cpp', 'c',
+        'html', 'css', 'scss', 'json', 'yaml', 'sql',
+        'bash', 'shell', 'typescript', 'php', 'go', 'rust'
       ]
+    })
+    
+    this.element.addEventListener('submit', () => {
+      this.markdownTarget.value = this.editor.getMarkdown()
     })
   }
 
@@ -45,8 +68,8 @@ export default class extends Controller {
     const regex = /^[a-z0-9\-]+$/
     const slug = this.slugTarget.value
     
-    if (!regex.test(slug)) {
-      this.showSlugError("Only lowercase letters, numbers and hyphens")
+    if (!regex.test(slug) && slug !== "") {
+      this.showSlugError("Invalid slug")
     } else {
       this.clearSlugError()
     }

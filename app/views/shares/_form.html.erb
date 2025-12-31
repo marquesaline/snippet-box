@@ -16,9 +16,9 @@
   
   <% unless share.persisted? %>
     <div class="form-group">  
-      <%= f.label :slug, "Custom URL (optional)" %>
+      <%= f.label :slug, "snippet-box.com/" %>
       <%= f.text_field :slug, 
-                      placeholder: "my-awesome-code",
+                      placeholder: "your-custom-slug",
                       data: { form_target: "slug", action: "blur->form#validateSlug" } %>
       <span class="error-message" data-form-target="slugError"></span>
       <small class="help-text">Only lowercase letters, numbers and hyphens. Leave blank to auto-generate.</small>
@@ -26,8 +26,8 @@
   <% end %>
 
   <div class="form-group">
-    <%= f.label :content, "Content (Markdown)" %>
-    <%= f.text_area :content, data: { form_target: "markdown" } %>
+    <%= f.label :content, "Content" %>
+    <%= f.text_area :content, placeholder: "Share your text or code here...", data: { form_target: "markdown" } %>
   </div>
 
   <div class="form-group">
