@@ -2,6 +2,9 @@ class SharesController < ApplicationController
   before_action :set_share, only: [ :show, :edit, :update ]
   before_action :verify_owner, only: [ :edit, :update ]
 
+  def about
+  end
+
   def show
   end
 

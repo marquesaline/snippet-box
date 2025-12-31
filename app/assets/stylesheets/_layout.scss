@@ -224,6 +224,20 @@ a {
   }
 }
 
+.edit-share-container {
+  .existing-files {
+    margin-bottom: 1rem; 
+    padding: 1rem; 
+    background: #f5f5f5; 
+    border-radius: 4px;
+
+    .file {
+      padding: 0.5rem 0; 
+      border-bottom: 1px solid #ddd;
+    }
+  }
+}
+
 .show-container {
   max-width: 1024px;
   margin: 1rem auto;
@@ -249,10 +263,60 @@ a {
         gap: 5px;
         align-items: center;
       }
-
-      .btn-download {
-      }
     }
   }
 }
+
+.about-page {
+  max-width: 1024px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+  line-height: 1.7;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $text-dark;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $text-dark;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    color: $text-dark;
+    margin-bottom: 1rem;
+  }
+
+  ul {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    li {
+      margin-bottom: 0.5rem;
+      color: $text-dark;
+    }
+  }
+
+  a {
+    color: $primary-blue;
+    text-decoration: underline;
+
+    &:hover {
+      color: darken($primary-blue, 10%);
+    }
+  }
+
+  .back-link {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid $border-color;
+  }
+}
+
 

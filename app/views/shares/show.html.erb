@@ -1,49 +1,78 @@
-<div class="show-container">
+<section class="show-container" aria-labelledby="share-heading">
   <% if @share.content.present? %>
-    <div data-controller="share" data-share-source-value="<%= @share.content %>">
+    <article data-controller="share" data-share-source-value="<%= @share.content %>"aria-labelledby="content-heading">
       <div class="content-header">
-        <h2>Content</h2>
-        <div class="toggle-buttons">
-          <button data-action="click->share#showRendered" data-share-target="renderedButton" class="btn-outline active">
+        <h2 id="content-heading">Content</h2>
+        
+        <div class="toggle-buttons" role="group" aria-label="Content view options">
+          <button data-action="click->share#showRendered" 
+                  data-share-target="renderedButton" 
+                  class="btn-outline active"
+                  aria-pressed="true"
+                  aria-label="Show rendered markdown">
             Rendered
           </button>
-          <button data-action="click->share#showRaw" data-share-target="rawButton" class="btn-outline">
+          
+          <button data-action="click->share#showRaw" 
+                  data-share-target="rawButton" 
+                  class="btn-outline"
+                  aria-pressed="false"
+                  aria-label="Show raw markdown">
             Raw
           </button>
-          <button data-action="click->share#copy" data-share-target="copyButton" class="btn-outline">
+          
+          <button data-action="click->share#copy" 
+                  data-share-target="copyButton" 
+                  class="btn-outline"
+                  aria-label="Copy content to clipboard">
             Copy
           </button>
+          
           <% if can_edit?(@share) %>
-            <%= link_to "Edit", edit_share_path(@share), class: "btn-outline" %>
+            <%= link_to "Edit", edit_share_path(@share), class: "btn-outline", aria: { label: "Edit this share" } %>
           <% end %>
         </div>
       </div>
 
-      <div data-share-target="rendered" class="markdown-content">
+      <!-- Rendered content -->
+      <div data-share-target="rendered" class="markdown-content"role="region" aria-label="Rendered markdown content">
         <%= render_markdown(@share.content) %>
       </div>
       
-      <pre data-share-target="raw" class="raw-content hidden"><%= @share.content %></pre>
-    </div>
+      <!-- Raw content -->
+      <pre data-share-target="raw" 
+           class="raw-content hidden"
+           role="region"
+           aria-label="Raw markdown source"><%= @share.content %></pre>
+      
+      <div class="sr-only" role="status" aria-live="polite" data-share-target="feedback"></div>
+    </article>
   <% end %>
 
   <% if @share.files.attached? %>
-    <div class="files-container">
-      <h2>Files</h2>
-      <div class="files-list">
+    <section class="files-container" aria-labelledby="files-heading">
+      <h2 id="files-heading">Files</h2>
+      
+      <ul class="files-list" role="list">
         <% @share.files.each do |file| %>
-          <div class="file-item">
+          <li class="file-item">
             <div class="file-info">
-              <span class="file-icon"><%= file_icon(file.filename.to_s) %></span>
+              <span class="file-icon" aria-hidden="true">
+                <%= file_icon(file.filename.to_s) %>
+              </span>
+              
               <div class="file-details">
                 <span class="file-name"><%= file.filename %></span>
                 <span class="file-size">(<%= number_to_human_size(file.byte_size) %>)</span>
               </div>
             </div>
-            <%= link_to "Download", rails_blob_path(file, disposition: "attachment"), class: "btn-outline" %>
-          </div>
+            
+            <%= link_to rails_blob_path(file, disposition: "attachment"), class: "btn-outline", aria: {label: "Download #{file.filename} (#{number_to_human_size(file.byte_size)})"} do %>
+              Download
+            <% end %>
+          </li>
         <% end %>
-      </div>
-    </div>
+      </ul>
+    </section>
   <% end %>
-</div>
+</section>

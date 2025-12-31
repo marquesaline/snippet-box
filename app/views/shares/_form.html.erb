@@ -2,7 +2,7 @@
               url: share.persisted? ? share_path(share.slug) : shares_path,
               method: share.persisted? ? :patch : :post,
               data: { controller: "form" }, 
-              html: { multipart: true } do |f| %>
+              html: { multipart: true, "aria-label": "Share form" } do |f| %>
   <% if share.errors.any? %>
     <div class="errors">
       <h2><%= pluralize(share.errors.count, "error") %> prohibited this share from being saved:</h2>
@@ -20,25 +20,26 @@
       <%= f.text_field :slug, 
                       placeholder: "your-custom-slug",
                       data: { form_target: "slug", action: "blur->form#validateSlug" } %>
-      <span class="error-message" data-form-target="slugError"></span>
+      <span class="error-message" role="alert" aria-live="polite" data-form-target="slugError"></span>
       <small class="help-text">Only lowercase letters, numbers and hyphens. Leave blank to auto-generate.</small>
+      <small class="help-text">Optional slug, if you don't provide it, it will be generated automatically.</small>
     </div>
   <% end %>
 
   <div class="form-group">
     <%= f.label :content, "Content" %>
-    <%= f.text_area :content, placeholder: "Share your text or code here...", data: { form_target: "markdown" } %>
+    <%= f.text_area :content, placeholder: "Share your text or code here...", data: { form_target: "markdown" }, aria: { labelledby: "content-label", describedby: "content-help"} %>
   </div>
 
   <div class="form-group">
     <%= f.label :files, "Files (optional)" %>
 
     <% if share.persisted? && share.files.attached? %>
-      <div class="existing-files" style="margin-bottom: 1rem; padding: 1rem; background: #f5f5f5; border-radius: 4px;">
+      <div class="existing-files">
         <h4 style="margin-top: 0;">Current files:</h4>
         <% share.files.each do |file| %>
-          <div style="padding: 0.5rem 0; border-bottom: 1px solid #ddd;">
-            <%= check_box_tag "remove_files[]", file.id, false, id: "remove_file_#{file.id}" %>
+          <div>
+            <%= check_box_tag "remove_files[]", file.id, false, id: "remove_file_#{file.id}", "aria-describedby": "remove_file_desc_#{file.id}" %>
             <%= label_tag "remove_file_#{file.id}" do %>
               📎 <strong><%= file.filename %></strong> 
               (<%= number_to_human_size(file.byte_size) %>)
