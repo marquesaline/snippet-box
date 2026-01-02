@@ -2,6 +2,7 @@
 set -e
 
 echo "Running database prepare..."
-bundle exec rails db:prepare
+bundle exec rails db:migrate
 
+echo "Database ready!"
 exec "$@"
