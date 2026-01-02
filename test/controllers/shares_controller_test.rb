@@ -149,13 +149,8 @@ class SharesControllerTest < ActionDispatch::IntegrationTest
 
     get share_path(share.slug)
 
-    assert_select "h2", "Files"
-    assert_select "a", text: "test_file.txt"
+    assert_select "h2", text: "Files"
+    assert_select ".file-name", text: "test_file.txt"
+    assert_select "a", text: "Download"
   end
-
-  # test "should raise 404 for non-existent slug" do
-  #   assert_raises(ActiveRecord::RecordNotFound) do
-  #     get share_path("non-existent-slug")
-  #   end
-  # end
 end
