@@ -1,8 +1,7 @@
-#!/bin/bash -e
+#!/bin/bash
+set -e
 
-# If running the rails server then create or migrate existing database
-if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-  ./bin/rails db:prepare
-fi
+echo "Running database prepare..."
+bundle exec rails db:prepare
 
-exec "${@}"
+exec "$@"
