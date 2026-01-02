@@ -1,15 +1,8 @@
+@use "sass:color";
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-a {
-  text-decoration: none;
-
-  &:hover {
-    cursor: pointer;
-  }
 }
 
 .btn-primary {
@@ -28,26 +21,9 @@ a {
   }
 }
 
-.btn-secondary {
-  padding: 10px;
-  background-color: #FFF;
-  border: 1px solid $primary-blue;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  font-size: 1rem;
-  font-weight: 500;
-  color: $primary-blue;
-
-  &:hover {
-    background-color: $primary-hover;
-    cursor: pointer;
-    color: #FFF;
-  }
-}
-
 .btn-outline {
   padding: 6px 16px;
-  background: white;
+  background: #FFF;
   border: 1px solid $primary-blue;
   border-radius: 6px;
   color: $primary-blue;
@@ -59,7 +35,7 @@ a {
 
   &:hover {
     background: $primary-blue;
-    color: white;
+    color: #FFF;
     cursor: pointer;
   }
 
@@ -168,7 +144,7 @@ a {
         }
 
         &:hover {
-          border-color: darken($border-color, 10%);
+          border-color: color.adjust($border-color, $lightness: -10%);
         }
 
         &:focus {
@@ -308,7 +284,7 @@ a {
     text-decoration: underline;
 
     &:hover {
-      color: darken($primary-blue, 10%);
+      color: color.adjust($primary-blue, $lightness: -10%);
     }
   }
 
