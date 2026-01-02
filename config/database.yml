@@ -1,22 +1,15 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  # For details on connection pooling, see Rails configuration guide
-  # https://guides.rubyonrails.org/configuring.html#database-pooling
-  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
-  primary: &primary_development
-    <<: *default
-    database: snippetbox_development
-    username: snippetbox
-    password: snippetbox
-    host: db
-    port: 5432
-  queue:
-    <<: *primary_development
-    database: snippetbox_development_queue
-    migrations_paths: db/queue_migrate
+  <<: *default
+  database: snippetbox_development
+  username: snippetbox
+  password: snippetbox
+  host: db
+  port: 5432
 
 test:
   <<: *default
@@ -24,23 +17,8 @@ test:
   username: snippetbox
   password: snippetbox
   host: db
-  port: 5432       
+  port: 5432
 
 production:
-  primary: &primary_production
-    <<: *default
-    database: snippetbox_production
-    username: snippetbox
-    password: <%= ENV["SNIPPETBOX_DATABASE_PASSWORD"] %>
-  cache:
-    <<: *primary_production
-    database: app_production_cache
-    migrations_paths: db/cache_migrate
-  queue:
-    <<: *primary_production
-    database: app_production_queue
-    migrations_paths: db/queue_migrate
-  cable:
-    <<: *primary_production
-    database: app_production_cable
-    migrations_paths: db/cable_migrate
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
