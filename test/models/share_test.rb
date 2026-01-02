@@ -80,7 +80,7 @@ class ShareTest < ActiveSupport::TestCase
   end
 
   test "should save share with valid files" do
-    share = Share.new(content: "Test", has_files: true)
+    share = Share.new(content: "Test")
 
     3.times do |i|
       share.files.attach(
@@ -89,7 +89,10 @@ class ShareTest < ActiveSupport::TestCase
       )
     end
 
+    share.save!
+
+    assert share.persisted?
+    assert_equal 3, share.files.count
     assert share.valid?
-    assert share.save
   end
 end
