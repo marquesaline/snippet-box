@@ -2,7 +2,7 @@
 
 A web platform for quick code, text and file sharing, initially designed for educational contexts (teachers sharing materials with students).
 
-🌐 **Live Demo:** [snippet-box.com](https://snippet-box.com)
+🌐 **Live Demo:** [snippet-box.com](https://www.snippet-box.com/)
 
 ---
 
