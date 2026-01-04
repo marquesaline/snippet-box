@@ -19,6 +19,28 @@
   padding: $spacing-lg;
   border-radius: $border-radius;
   border: $border-width solid $border-color;
+
+  h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  ul, ol {
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    padding-left: 2rem;
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  input[type="checkbox"] {
+    margin-right: 0.5rem;
+  }
 }
 
 .raw-content {
