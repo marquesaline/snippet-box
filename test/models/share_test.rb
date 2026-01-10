@@ -7,7 +7,7 @@ class ShareTest < ActiveSupport::TestCase
   end
 
   test "should auto-generate slug if not provided" do
-    share = Share.new(content: "Test content")
+    share = Share.new(content: "Test content", has_files: false)
     assert share.save
     assert_not_nil share.slug
     assert_match /\A[a-z0-9\-]+\z/, share.slug
