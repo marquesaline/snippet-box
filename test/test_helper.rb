@@ -11,5 +11,20 @@ module ActiveSupport
     fixtures :all
 
     # Add more helper methods to be used by all tests here...
+    setup do
+      ActiveStorage::Current.url_options = { host: "test.host", protocol: "http" }
+    end
+
+    teardown do
+      FileUtils.rm_rf(ActiveStorage::Blob.service.root)
+    end
+  end
+end
+
+module ActionDispatch
+  class IntegrationTest
+    setup do
+      host! "test.host"
+    end
   end
 end

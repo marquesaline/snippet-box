@@ -50,14 +50,19 @@ class SharesControllerTest < ActionDispatch::IntegrationTest
       post shares_path, params: {
         share: {
           content: "# Test with file",
-          files: [ file ]
+          files: [file]
         }
       }
     end
 
+    assert_response :redirect
+    follow_redirect!
+    assert_response :success
+
     share = Share.last
-    assert share.files.attached?
-    assert_equal 1, share.files.count
+    assert_not_nil share, "Share should be created"
+    assert share.files.attached?, "Files should be attached"
+    assert_equal 1, share.files.count, "Should have exactly 1 file"
   end
 
   test "should not create share with invalid params" do
