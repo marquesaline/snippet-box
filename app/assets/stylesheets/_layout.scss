@@ -328,3 +328,14 @@
     text-decoration: none;
   }
 }
+
+footer {
+  margin: 1.5rem auto !important;
+  display: flex;
+  justify-content: center;
+
+  p {
+    color: $text-muted;
+    font-size: 0.875rem;
+  }
+}
