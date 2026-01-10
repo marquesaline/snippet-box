@@ -39,7 +39,7 @@ gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 1.2"
-gem "minitest", "~> 5.25"
+gem "minitest", "~> 6.0"
 gem "active_storage_validations"
 gem "kramdown"
 gem "kramdown-parser-gfm"
