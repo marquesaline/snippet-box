@@ -27,6 +27,14 @@
     margin-bottom: 1rem;
   }
 
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1rem 0;
+    border-radius: 4px;
+  }
+
   ul, ol {
     margin-bottom: 1rem;
     margin-top: 0.5rem;
