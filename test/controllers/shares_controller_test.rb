@@ -50,7 +50,7 @@ class SharesControllerTest < ActionDispatch::IntegrationTest
       post shares_path, params: {
         share: {
           content: "# Test with file",
-          files: [file]
+          files: [ file ]
         }
       }
     end
