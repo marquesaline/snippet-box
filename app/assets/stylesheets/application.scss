@@ -207,3 +207,15 @@ table {
 .toastui-editor-main, .toastui-editor-md-mode {
   background-color: #FFF !important;
 }
+
+footer {
+  margin: 1.5rem auto !important;
+  display: flex;
+  justify-content: center;
+
+  p {
+    color: $text-muted;
+    font-size: 0.875rem;
+  }
+}
+
