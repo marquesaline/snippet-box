@@ -1,6 +1,14 @@
 class Share < ApplicationRecord
   has_many_attached :files
-  attr_accessor :has_files
+  attr_accessor :has_files, :expiry_option
+
+  EXPIRY_OPTIONS = {
+    "1h"  => 1.hour,
+    "1d"  => 1.day,
+    "7d"  => 7.days,
+    "30d" => 30.days,
+    "never" => nil
+  }.freeze
 
   before_validation :generate_edit_token
   before_validation :generate_slug_if_blank
@@ -14,6 +22,16 @@ class Share < ApplicationRecord
 
   def to_param
     slug
+  end
+
+  def detected_languages
+    return [] if content.blank?
+    content.scan(/```(\w+)/).flatten.map(&:downcase).uniq.reject(&:blank?)
+  end
+
+  def expiry_label
+    return "Never expires" if expires_at.nil?
+    "Expires #{expires_at.strftime("%b %d, %Y")}"
   end
 
   private
@@ -33,14 +51,14 @@ class Share < ApplicationRecord
     return if slug.present?
 
     loop do
-      random_slug = SecureRandom.urlsafe_base64(4).downcase
+      random_slug = SecureRandom.hex(3)
       break self.slug = random_slug unless Share.exists?(slug: random_slug)
     end
   end
 
   def set_expires_at
-    return if expires_at.present?
-    self.expires_at = 30.days.from_now
+    duration = EXPIRY_OPTIONS.fetch(expiry_option || "30d", 30.days)
+    self.expires_at = duration ? duration.from_now : nil
   end
 
   def maximum_files_attached

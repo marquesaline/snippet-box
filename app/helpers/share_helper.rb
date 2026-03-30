@@ -8,9 +8,37 @@ module ShareHelper
 
     Kramdown::Document.new(
       text,
-      input: "GFM",  # GitHub Flavored Markdown
+      input: "GFM",
       syntax_highlighter: "rouge"
     ).to_html.html_safe
+  end
+
+  def extract_title_from_markdown(content)
+    return nil if content.blank?
+    match = content.match(/\A\s*#\s+(.+)$/)
+    match&.captures&.first&.strip
+  end
+
+  def language_label(lang)
+    {
+      "rb" => "Ruby", "ruby" => "Ruby",
+      "js" => "JavaScript", "javascript" => "JavaScript",
+      "ts" => "TypeScript", "typescript" => "TypeScript",
+      "py" => "Python", "python" => "Python",
+      "go" => "Go",
+      "rs" => "Rust", "rust" => "Rust",
+      "java" => "Java",
+      "cs" => "C#",
+      "cpp" => "C++", "c" => "C",
+      "html" => "HTML", "css" => "CSS", "scss" => "SCSS",
+      "sql" => "SQL",
+      "sh" => "Shell", "bash" => "Shell",
+      "json" => "JSON", "yaml" => "YAML", "yml" => "YAML",
+      "md" => "Markdown", "markdown" => "Markdown",
+      "php" => "PHP",
+      "swift" => "Swift", "kotlin" => "Kotlin",
+      "dockerfile" => "Dockerfile"
+    }.fetch(lang, lang.upcase)
   end
 
   def file_icon(filename)

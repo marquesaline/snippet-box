@@ -19,6 +19,11 @@ class SharesControllerTest < ActionDispatch::IntegrationTest
     assert_select "textarea[name='share[content]']", text: ""
   end
 
+  test "new renders expiry select" do
+    get new_share_path
+    assert_select "select[name='share[expiry_option]']"
+  end
+
   test "should create share with valid params" do
     assert_difference("Share.count", 1) do
       post shares_path, params: {
@@ -32,6 +37,21 @@ class SharesControllerTest < ActionDispatch::IntegrationTest
     share = Share.last
     assert_redirected_to share_path(share.slug)
     assert_equal share.edit_token, cookies["owner_#{share.slug}"]
+  end
+
+  test "should create share with expiry option 1h" do
+    post shares_path, params: {
+      share: { slug: "expiry-1h", content: "Test", expiry_option: "1h" }
+    }
+    share = Share.last
+    assert_in_delta 1.hour.from_now, share.expires_at, 5.seconds
+  end
+
+  test "should create share with expiry option never" do
+    post shares_path, params: {
+      share: { slug: "expiry-never", content: "Test", expiry_option: "never" }
+    }
+    assert_nil Share.last.expires_at
   end
 
   test "should auto-generate slug if not provided" do
@@ -120,6 +140,63 @@ class SharesControllerTest < ActionDispatch::IntegrationTest
     assert_select "div.markdown-content"
   end
 
+  test "should increment views_count on show for non-owner" do
+    share = Share.create!(slug: "views-test", content: "Test")
+    assert_difference -> { share.reload.views_count }, 1 do
+      get share_path(share.slug)
+    end
+  end
+
+  test "should not increment views_count when owner views" do
+    share = Share.create!(slug: "owner-views-test", content: "Test")
+    cookies["owner_#{share.slug}"] = share.edit_token
+
+    assert_no_difference -> { share.reload.views_count } do
+      get share_path(share.slug)
+    end
+  end
+
+  test "should show raw content" do
+    share = Share.create!(slug: "raw-test", content: "# Hello\n\nSome content")
+
+    get raw_share_path(share.slug)
+
+    assert_response :success
+    assert_equal "text/plain; charset=utf-8", response.content_type
+    assert_equal share.content, response.body
+  end
+
+  test "raw returns no_content when share has no content" do
+    share = Share.new(slug: "raw-files-only")
+    share.has_files = true
+    share.files.attach(io: StringIO.new("data"), filename: "f.txt")
+    share.save!
+
+    get raw_share_path(share.slug)
+
+    assert_response :no_content
+  end
+
+  test "should fork a share" do
+    share = Share.create!(slug: "fork-source", content: "# Original")
+
+    assert_difference("Share.count", 1) do
+      post fork_share_path(share.slug)
+    end
+
+    forked = Share.last
+    assert_equal share.content, forked.content
+    assert_not_equal share.slug, forked.slug
+    assert_redirected_to edit_share_path(forked.slug)
+  end
+
+  test "fork sets owner cookie for forked share" do
+    share = Share.create!(slug: "fork-cookie", content: "Test")
+    post fork_share_path(share.slug)
+    forked = Share.last
+    assert_equal forked.edit_token, cookies["owner_#{forked.slug}"]
+  end
+
   test "should show edit link when has valid cookie" do
     share = Share.create!(
       slug: "cookie-test",
@@ -157,5 +234,37 @@ class SharesControllerTest < ActionDispatch::IntegrationTest
     assert_select "h2", text: "Files"
     assert_select ".file-name", text: "test_file.txt"
     assert_select "a", text: "Download"
+  end
+
+  test "show displays language badges for fenced code blocks" do
+    share = Share.create!(slug: "lang-badge", content: "```ruby\nputs 'hi'\n```")
+
+    get share_path(share.slug)
+
+    assert_select ".language-badge", text: "Ruby"
+  end
+
+  test "show uses first heading as page title" do
+    share = Share.create!(slug: "seo-title", content: "# My Snippet\n\nSome content")
+
+    get share_path(share.slug)
+
+    assert_select "title", text: /My Snippet/
+  end
+
+  test "show displays view count" do
+    share = Share.create!(slug: "view-count-display", content: "Test")
+
+    get share_path(share.slug)
+
+    assert_select ".share-views"
+  end
+
+  test "show displays expiry label" do
+    share = Share.create!(slug: "expiry-display", content: "Test")
+
+    get share_path(share.slug)
+
+    assert_select ".share-expiry"
   end
 end

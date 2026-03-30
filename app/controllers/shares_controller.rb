@@ -1,11 +1,21 @@
 class SharesController < ApplicationController
-  before_action :set_share, only: [ :show, :edit, :update ]
+  before_action :set_share, only: [ :show, :raw, :edit, :update, :fork ]
   before_action :verify_owner, only: [ :edit, :update ]
 
   def about
   end
 
   def show
+    is_owner = cookies["owner_#{@share.slug}"] == @share.edit_token
+    @share.increment!(:views_count) unless is_owner
+  end
+
+  def raw
+    if @share.content.present?
+      render plain: @share.content
+    else
+      render plain: "", status: :no_content
+    end
   end
 
   def new
@@ -47,6 +57,22 @@ class SharesController < ApplicationController
     end
   end
 
+  def fork
+    forked = Share.new(content: @share.content)
+    forked.has_files = false
+    forked.expiry_option = "30d"
+
+    if forked.save
+      cookies["owner_#{forked.slug}"] = {
+        value: forked.edit_token,
+        expires: 30.days.from_now
+      }
+      redirect_to edit_share_path(forked.slug)
+    else
+      redirect_to share_path(@share.slug), alert: "Could not fork this share"
+    end
+  end
+
   private
 
   def set_share
@@ -60,7 +86,7 @@ class SharesController < ApplicationController
   end
 
   def share_params_create
-    params.require(:share).permit(:slug, :content, files: [])
+    params.require(:share).permit(:slug, :content, :expiry_option, files: [])
   end
 
   def share_params_update

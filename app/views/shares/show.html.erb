@@ -1,33 +1,50 @@
+<% page_title = extract_title_from_markdown(@share.content) %>
+<% if page_title %>
+  <% content_for :title, "#{page_title} — SnippetBox" %>
+  <% content_for :description, "#{page_title} — shared on SnippetBox. #{@share.content.truncate(120)}" %>
+<% end %>
+
 <section class="show-container" aria-labelledby="share-heading">
   <% if @share.content.present? %>
     <article data-controller="share" data-share-source-value="<%= @share.content %>"aria-labelledby="content-heading">
       <div class="content-header">
-        <h2 id="content-heading">Content</h2>
-        
+        <div class="content-header-left">
+          <h2 id="content-heading"><%= page_title || "Content" %></h2>
+          <% if @share.detected_languages.any? %>
+            <div class="language-badges" aria-label="Detected languages">
+              <% @share.detected_languages.each do |lang| %>
+                <span class="language-badge"><%= language_label(lang) %></span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
         <div class="toggle-buttons" role="group" aria-label="Content view options">
-          <button data-action="click->share#showRendered" 
-                  data-share-target="renderedButton" 
+          <button data-action="click->share#showRendered"
+                  data-share-target="renderedButton"
                   class="btn-outline active"
                   aria-pressed="true"
                   aria-label="Show rendered markdown">
             Rendered
           </button>
-          
-          <button data-action="click->share#showRaw" 
-                  data-share-target="rawButton" 
+
+          <button data-action="click->share#showRaw"
+                  data-share-target="rawButton"
                   class="btn-outline"
                   aria-pressed="false"
                   aria-label="Show raw markdown">
             Raw
           </button>
-          
-          <button data-action="click->share#copy" 
-                  data-share-target="copyButton" 
+
+          <button data-action="click->share#copy"
+                  data-share-target="copyButton"
                   class="btn-outline"
                   aria-label="Copy content to clipboard">
             Copy
           </button>
-          
+
+          <%= link_to "Raw URL", raw_share_path(@share), class: "btn-outline", target: "_blank", aria: { label: "Open raw content" } %>
+
           <% if can_edit?(@share) %>
             <%= link_to "Edit", edit_share_path(@share), class: "btn-outline", aria: { label: "Edit this share" } %>
           <% end %>
@@ -35,16 +52,16 @@
       </div>
 
       <!-- Rendered content -->
-      <div data-share-target="rendered" class="markdown-content"role="region" aria-label="Rendered markdown content">
+      <div data-share-target="rendered" class="markdown-content" role="region" aria-label="Rendered markdown content">
         <%= render_markdown(@share.content) %>
       </div>
-      
+
       <!-- Raw content -->
-      <pre data-share-target="raw" 
+      <pre data-share-target="raw"
            class="raw-content hidden"
            role="region"
            aria-label="Raw markdown source"><%= @share.content %></pre>
-      
+
       <div class="sr-only" role="status" aria-live="polite" data-share-target="feedback"></div>
     </article>
   <% end %>
@@ -52,7 +69,7 @@
   <% if @share.files.attached? %>
     <section class="files-container" aria-labelledby="files-heading">
       <h2 id="files-heading">Files</h2>
-      
+
       <ul class="files-list" role="list">
         <% @share.files.each do |file| %>
           <li class="file-item">
@@ -60,13 +77,13 @@
               <span class="file-icon" aria-hidden="true">
                 <%= file_icon(file.filename.to_s) %>
               </span>
-              
+
               <div class="file-details">
                 <span class="file-name"><%= file.filename %></span>
                 <span class="file-size">(<%= number_to_human_size(file.byte_size) %>)</span>
               </div>
             </div>
-            
+
             <%= link_to rails_blob_path(file, disposition: "attachment"), class: "btn-outline", aria: {label: "Download #{file.filename} (#{number_to_human_size(file.byte_size)})"} do %>
               Download
             <% end %>
@@ -75,7 +92,14 @@
       </ul>
     </section>
   <% end %>
-  <div class="new-share-btn">
+
+  <div class="share-meta">
+    <span class="share-views" aria-label="View count"><%= @share.views_count %> <%= "view".pluralize(@share.views_count) %></span>
+    <span class="share-expiry"><%= @share.expiry_label %></span>
+  </div>
+
+  <div class="share-actions">
+    <%= button_to "Fork & Edit", fork_share_path(@share), method: :post, class: "btn-outline", aria: { label: "Create an editable copy of this share" } %>
     <a href="/" class="btn-primary">Create a new share</a>
   </div>
 </section>

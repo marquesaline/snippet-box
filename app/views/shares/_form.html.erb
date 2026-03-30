@@ -15,14 +15,20 @@
   <% end %>
   
   <% unless share.persisted? %>
-    <div class="form-group">  
+    <div class="form-group">
       <%= f.label :slug, "snippet-box.com/" %>
-      <%= f.text_field :slug, 
+      <%= f.text_field :slug,
                       placeholder: "your-custom-slug",
                       data: { form_target: "slug", action: "blur->form#validateSlug" } %>
       <span class="error-message" role="alert" aria-live="polite" data-form-target="slugError"></span>
       <small class="help-text">Only lowercase letters, numbers and hyphens. Leave blank to auto-generate.</small>
-      <small class="help-text">Optional slug, if you don't provide it, it will be generated automatically.</small>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :expiry_option, "Expires in" %>
+      <%= f.select :expiry_option,
+                   [["1 hour", "1h"], ["1 day", "1d"], ["7 days", "7d"], ["30 days", "30d"], ["Never", "never"]],
+                   { selected: "30d" } %>
     </div>
   <% end %>
 
