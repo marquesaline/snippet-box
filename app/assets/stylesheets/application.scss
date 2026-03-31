@@ -70,8 +70,8 @@ code {
   font-weight: 500;
 }
 
-// Code blocks
-pre {
+// Code blocks — escoped dentro do markdown para não afetar .raw-content
+.markdown-content pre {
   background: #1e1e1e !important;
   border: 1px solid #3d3d3d;
   border-radius: 8px;
@@ -94,11 +94,11 @@ pre {
   }
 }
 
-pre code * {
+.markdown-content pre code * {
   text-shadow: none !important;
 }
 
-pre code {
+.markdown-content pre code {
   .token.keyword {
     color: #569cd6;
     font-weight: 500;

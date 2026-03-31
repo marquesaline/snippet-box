@@ -6,6 +6,10 @@ export default class extends Controller {
   static targets = ["rendered", "raw", "renderedButton", "rawButton", "copyButton"]
   static values = { source: String }
 
+  connect() {
+    this.showRendered()
+  }
+
   showRendered() {
     this.renderedTarget.classList.remove("hidden")
     this.rawTarget.classList.add("hidden")
