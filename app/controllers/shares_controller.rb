@@ -9,6 +9,7 @@ class SharesController < ApplicationController
   def sitemap
     @shares = Share.where("expires_at > ? OR expires_at IS NULL", 7.days.from_now)
                    .where.not(content: [ nil, "" ])
+                   .where("slug !~ '^[a-f0-9]{6}$'")
                    .order(updated_at: :desc)
                    .limit(1000)
     respond_to do |format|
