@@ -8,6 +8,7 @@ export default class extends Controller {
 
   connect() {
     this.showRendered()
+    this.addCodeCopyButtons()
   }
 
   showRendered() {
@@ -22,6 +23,32 @@ export default class extends Controller {
     this.rawTarget.classList.remove("hidden")
     this.renderedButtonTarget.classList.remove("active")
     this.rawButtonTarget.classList.add("active")
+  }
+
+  addCodeCopyButtons() {
+    this.renderedTarget.querySelectorAll("pre:not(.has-copy-btn)").forEach((pre) => {
+      pre.classList.add("has-copy-btn")
+
+      const btn = document.createElement("button")
+      btn.textContent = "Copy"
+      btn.className = "code-copy-btn"
+      btn.type = "button"
+      btn.setAttribute("aria-label", "Copy code to clipboard")
+
+      btn.addEventListener("click", () => {
+        const code = pre.querySelector("code")
+        navigator.clipboard.writeText(code ? code.textContent : "").then(() => {
+          btn.textContent = "Copied!"
+          btn.classList.add("copied")
+          setTimeout(() => {
+            btn.textContent = "Copy"
+            btn.classList.remove("copied")
+          }, 2000)
+        })
+      })
+
+      pre.appendChild(btn)
+    })
   }
 
   copy() {

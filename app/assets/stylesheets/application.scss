@@ -72,6 +72,7 @@ code {
 
 // Code blocks — escoped dentro do markdown para não afetar .raw-content
 .markdown-content pre {
+  position: relative;
   background: #1e1e1e !important;
   border: 1px solid #3d3d3d;
   border-radius: 8px;
@@ -79,6 +80,31 @@ code {
   overflow-x: auto;
   margin: 1.5rem 0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .code-copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 3px 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.7rem;
+    font-family: $font-family-ui;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+
+    &.copied {
+      color: $success-color;
+      border-color: $success-color;
+    }
+  }
 
   code {
     background: none !important;

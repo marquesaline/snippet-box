@@ -102,6 +102,21 @@
   }
 }
 
+.errors {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: $border-radius;
+  padding: $spacing-md;
+  margin-bottom: $spacing-lg;
+  color: $danger-color;
+  font-size: $font-size-sm;
+
+  ul {
+    margin: $spacing-xs 0 0 $spacing-lg;
+    li { margin-bottom: 0.25rem; }
+  }
+}
+
 .new-share-container, .edit-share-container {
   max-width: 1024px;
   margin: 1rem auto;
@@ -294,16 +309,29 @@
     margin-top: 1.25rem;
     font-size: 0.8rem;
     color: $text-muted;
+
+    .views-owner-note {
+      font-size: 0.75rem;
+      color: $text-light;
+    }
   }
 
   .share-actions {
     display: flex;
     gap: 0.75rem;
     justify-content: center;
+    align-items: center;
     margin: 1.5rem auto 2rem;
 
     form {
       margin: 0;
+    }
+
+    .btn-primary,
+    .btn-outline,
+    .btn-danger {
+      padding: 6px 16px;
+      font-size: 0.875rem;
     }
 
     .btn-primary {

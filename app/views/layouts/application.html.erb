@@ -9,7 +9,7 @@
     <meta name="description" content="<%= content_for(:description) || 'Share code snippets and files via short URLs. Supports markdown, syntax highlighting, and file uploads. No account required.' %>">
     <meta name="keywords" content="code sharing, pastebin, snippet manager, markdown, file sharing, developer tools">
     <meta name="author" content="Aline Marques">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="<%= content_for?(:robots) ? yield(:robots) : 'index, follow' %>">
     
     <!-- Open Graph (Facebook/LinkedIn) -->
     <meta property="og:title" content="<%= content_for(:title) || 'SnippetBox - Share Code Snippets & Files' %>">
@@ -26,7 +26,7 @@
     <meta name="twitter:image" content="<%= asset_url('og-image.png') %>">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="<%= request.original_url %>">
+    <link rel="canonical" href="<%= request.base_url + request.path %>">
     
     <!-- PWA/Mobile -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -52,18 +52,7 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-      <%# Toast UI Editor - CSS %>
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
-    
-    <%# Toast UI Editor - Syntax Highlighting %>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" />
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight.min.css" />
-    
-    <%# Toast UI Editor - JS %>
-    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight-all.min.js"></script>
-    
+
     <%= javascript_importmap_tags %>
   </head>
 

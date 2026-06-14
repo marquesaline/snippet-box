@@ -4,6 +4,25 @@
   <% content_for :description, "#{page_title} — shared on SnippetBox. #{@share.content.truncate(120)}" %>
 <% end %>
 
+<% if @share.expires_at && @share.expires_at < 2.days.from_now %>
+  <% content_for :robots, "noindex, nofollow" %>
+<% end %>
+
+<% content_for :head do %>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "<%= j(page_title || "Code Snippet") %>",
+    "description": "<%= j(@share.content.truncate(150)) %>",
+    "url": "<%= share_url(@share) %>",
+    "dateCreated": "<%= @share.created_at.iso8601 %>",
+    "dateModified": "<%= @share.updated_at.iso8601 %>"<% if @share.detected_languages.any? %>,
+    "programmingLanguage": [<%= @share.detected_languages.map { |l| "\"#{language_label(l)}\"" }.join(", ") %>]<% end %>
+  }
+  </script>
+<% end %>
+
 <section class="show-container" aria-labelledby="share-heading">
   <% if @share.content.present? %>
     <article data-controller="share" data-share-source-value="<%= @share.content %>"aria-labelledby="content-heading">
@@ -94,12 +113,22 @@
   <% end %>
 
   <div class="share-meta">
-    <span class="share-views" aria-label="View count"><%= @share.views_count %> <%= "view".pluralize(@share.views_count) %></span>
+    <span class="share-views" aria-label="View count">
+      <%= @share.views_count %> <%= "view".pluralize(@share.views_count) %>
+      <% if can_edit?(@share) %>
+        <span class="views-owner-note">(not counting yours)</span>
+      <% end %>
+    </span>
     <span class="share-expiry"><%= @share.expiry_label %></span>
   </div>
 
   <div class="share-actions">
     <%= button_to "Fork & Edit", fork_share_path(@share), method: :post, class: "btn-outline", aria: { label: "Create an editable copy of this share" } %>
     <a href="/" class="btn-primary">Create a new share</a>
+    <% if can_edit?(@share) %>
+      <%= button_to "Delete", destroy_share_path(@share), method: :delete, class: "btn-danger",
+            data: { turbo_confirm: "Delete this share? This cannot be undone." },
+            aria: { label: "Delete this share permanently" } %>
+    <% end %>
   </div>
 </section>

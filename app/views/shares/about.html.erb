@@ -1,37 +1,47 @@
+<% content_for :title, "About SnippetBox — Free Code Snippet & File Sharing Tool" %>
+<% content_for :description, "SnippetBox is a free pastebin alternative with Markdown rendering, syntax highlighting for 20+ languages, and file uploads. No account required. Share code snippets and files instantly." %>
+
 <section class="about-page">
   <h1>About SnippetBox</h1>
 
   <p>
-    SnippetBox is a simple tool for sharing code snippets and files. 
-    Perfect for teachers sharing materials with students or developers 
-    sharing code examples.
+    SnippetBox is a free, open-source tool for sharing code snippets and files instantly —
+    no account, no login, no friction. Paste your code, get a short URL, share it with anyone.
   </p>
+
+  <h2>Why SnippetBox?</h2>
+  <p>
+    Most code sharing tools either require you to create an account or strip away formatting.
+    SnippetBox gives you <strong>Markdown rendering with live syntax highlighting</strong> and
+    <strong>file uploads</strong> in one place, completely anonymously.
+  </p>
+  <ul>
+    <li><strong>No account required</strong> — create and share in seconds</li>
+    <li><strong>Markdown support</strong> — write formatted content with headings, lists, tables, and code blocks</li>
+    <li><strong>Syntax highlighting</strong> for Ruby, JavaScript, TypeScript, Python, Go, Rust, SQL, and 15+ more languages</li>
+    <li><strong>File uploads</strong> — attach up to 5 files (5MB each) alongside your snippet</li>
+    <li><strong>Custom URLs</strong> — choose a memorable slug or get a random short link</li>
+    <li><strong>Automatic expiration</strong> — shares expire after your chosen time (1 hour to never)</li>
+    <li><strong>Fork & edit</strong> — copy any share and make it your own</li>
+  </ul>
 
   <h2>How it works</h2>
   <ul>
-    <li>Create a share with markdown content and/or files</li>
-    <li>Get a short URL to share with others</li>
-    <li>Edit your share for 30 days (if you have the edit cookie)</li>
-    <li><strong>All shares automatically expire after 30 days</strong></li>
-  </ul>
-
-  <h2>Features</h2>
-  <ul>
-    <li>Markdown support with syntax highlighting</li>
-    <li>Upload up to 5 files (5MB each)</li>
-    <li>Custom URLs</li>
-    <li>No account required</li>
+    <li>Write your content using Markdown — code blocks, headings, links, and more</li>
+    <li>Optionally upload files (PDFs, images, spreadsheets, source files)</li>
+    <li>Choose a custom URL or let SnippetBox generate a short one</li>
+    <li>Share the link — your snippet is immediately available, no account needed</li>
+    <li>Edit your share within 30 days using the edit cookie stored in your browser</li>
   </ul>
 
   <h2>Privacy & Data</h2>
-  <p>What we store: </p>
-  <ul>
-    <li>Text content and uploaded files you share</li>
-    <li>An edit token (cookie) to allow editing for 30 days</li>
-    <li>Shares automatically expire after 30 days</li>
-  </ul>
+  <p>
+    SnippetBox stores only what you share: your text content, uploaded files, and an edit token
+    (saved as a browser cookie) that lets you update your share. Shares automatically expire
+    and are permanently deleted after your chosen duration.
+  </p>
 
-  <h2>Links</h2>
+  <h2>Open Source</h2>
   <ul>
     <li>
       <a href="https://github.com/marquesaline/snippet-box" target="_blank" rel="noopener">

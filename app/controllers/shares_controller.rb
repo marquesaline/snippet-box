@@ -1,8 +1,19 @@
 class SharesController < ApplicationController
-  before_action :set_share, only: [ :show, :raw, :edit, :update, :fork ]
-  before_action :verify_owner, only: [ :edit, :update ]
+  before_action :set_share, only: [ :show, :raw, :edit, :update, :fork, :destroy ]
+
+  before_action :verify_owner, only: [ :edit, :update, :destroy ]
 
   def about
+  end
+
+  def sitemap
+    @shares = Share.where("expires_at > ? OR expires_at IS NULL", 7.days.from_now)
+                   .where.not(content: [ nil, "" ])
+                   .order(updated_at: :desc)
+                   .limit(1000)
+    respond_to do |format|
+      format.xml { render layout: false }
+    end
   end
 
   def show
@@ -55,6 +66,12 @@ class SharesController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @share.destroy
+    cookies.delete("owner_#{@share.slug}")
+    redirect_to root_path, notice: "Share deleted."
   end
 
   def fork

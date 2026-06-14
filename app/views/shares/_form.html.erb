@@ -4,8 +4,8 @@
               data: { controller: "form" }, 
               html: { multipart: true, "aria-label": "Share form" } do |f| %>
   <% if share.errors.any? %>
-    <div class="errors">
-      <h2><%= pluralize(share.errors.count, "error") %> prohibited this share from being saved:</h2>
+    <div class="errors" role="alert">
+      <p><strong><%= pluralize(share.errors.count, "error") %> prevented this share from being saved:</strong></p>
       <ul>
         <% share.errors.full_messages.each do |message| %>
           <li><%= message %></li>
